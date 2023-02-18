@@ -47,7 +47,7 @@
 import { useRoute } from 'vue-router'
 import { computed, onMounted } from 'vue';
 import store from '@/store';
-import { currency } from '../../utils';
+import { currency } from '../utils';
 const route = useRoute()
 const product = computed(()=> store.getters.getProduct)
 const picMain = computed(()=>(product.value?.media)?product.value?.media[0]:[])

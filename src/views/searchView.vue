@@ -37,7 +37,7 @@
 
 <script setup>
 import { computed, onMounted } from 'vue';
-import { currency } from '../../utils';
+import { currency } from '../utils';
 import store from '@/store';
 import AsideFilter from '@/components/layout/asideFilter';
 

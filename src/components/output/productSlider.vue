@@ -62,7 +62,7 @@
 
 <script setup>
 import { defineProps } from 'vue';
-import {currency} from '../../../utils';
+import {currency} from '../../utils';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/navigation';
