@@ -1,5 +1,21 @@
 <script setup>
 import logo from '@/assets/logo.png'
+import { computed, onMounted } from 'vue';
+import store from '@/store';
+onMounted(async ()=>{
+  await store.dispatch('generateCategory')
+  await store.dispatch('generateUserInfo')
+  await store.dispatch('generateCart')
+})
+const token = computed(()=>store.getters.getToken)
+const user = computed(()=>store.getters.getUser)
+const category = computed(()=>store.getters.getCategory)
+const subCategory = computed(()=>store.getters.getSubCategory)
+const wishList = computed(()=>store.getters.getWishList)
+const cart = computed(()=>store.getters.getCart)
+const setSubCategory = (x) => {
+  store.commit('setSubCategory',x)
+}
 </script>
 <template>
   <!-- header -->
@@ -35,30 +51,30 @@ import logo from '@/assets/logo.png'
           <router-link to="/about" class="text-gray-800 hover:text-primary transition">درمورد ما</router-link>
           <router-link to="/contact" class="text-gray-800 hover:text-primary transition">ارتباط با ما</router-link>
         </div>
-        <a href="wishlist.html" class="block text-center text-gray-700 hover:text-primary transition relative">
+        <router-link to="/wish-list" class="block text-center text-gray-700 hover:text-primary transition relative">
                     <span
-                        class="absolute -right-0 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">5</span>
+                        class="absolute -right-0 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">{{ wishList.length }}</span>
           <div class="text-2xl">
             <i class="far fa-heart"></i>
           </div>
           <div class="text-xs leading-3">پسندیده ها
           </div>
-        </a>
-        <a href="cart.html"
+        </router-link>
+        <router-link to="/cart"
            class="lg:block text-center text-gray-700 hover:text-primary transition hidden relative">
                     <span
-                        class="absolute -right-0 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">3</span>
+                        class="absolute -right-0 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">{{ cart?.items_count || 0 }}</span>
           <div class="text-2xl">
             <i class="fas fa-shopping-bag"></i>
           </div>
           <div class="text-xs leading-3">سبد خرید</div>
-        </a>
-        <a href="account.html" class="block text-center text-gray-700 hover:text-primary transition">
+        </router-link>
+        <router-link to="/account" v-if="token" class="block text-center text-gray-700 hover:text-primary transition">
           <div class="text-2xl">
             <i class="far fa-user"></i>
           </div>
           <div class="text-xs leading-3">حساب</div>
-        </a>
+        </router-link>
       </div>
       <!-- navicons end -->
 
@@ -80,8 +96,8 @@ import logo from '@/assets/logo.png'
 
           <div class="absolute left-0 top-full w-full bg-white shadow-md py-3 invisible opacity-0 group-hover:opacity-100 group-hover:visible transition duration-300 z-50 divide-y divide-gray-300 divide-dashed">
             <!-- single category -->
-            <a href="#" class="px-6 py-3 flex items-center hover:bg-gray-100 transition">
-              <span class="ml-6 text-gray-600 text-sm">دسته</span>
+            <a href="#" @click="setSubCategory(cat.children_recursive)" v-for="(cat,i) in category" :key="i" class="px-6 py-3 flex items-center hover:bg-gray-100 transition">
+              <span class="ml-6 text-gray-600 text-sm">{{ cat.title }}</span>
             </a>
             <!-- single category end -->
           </div>
@@ -91,14 +107,14 @@ import logo from '@/assets/logo.png'
         <!-- nav menu -->
         <div class="flex items-center justify-between flex-grow pl-12">
           <div class="flex items-center space-x-6 text-base capitalize">
-            <a href="#" class="text-gray-200 hover:text-white transition">زیردسته</a>
-            <a href="#" class="text-gray-200 hover:text-white transition">زیردسته</a>
-            <a href="#" class="text-gray-200 hover:text-white transition">زیردسته</a>
-            <a href="#" class="text-gray-200 hover:text-white transition">زیردسته</a>
+            <a href="#" v-for="(subC,i) in subCategory" :key="i" class="text-gray-200 hover:text-white transition">{{ subC.title }}</a>
           </div>
-          <router-link to="/login" class="ml-auto text-sm w-24 h-8 bg-blue-500 p-2 rounded-lg justify-self-end justify-items-center text-gray-200 hover:text-white transition">
+          <router-link to="/login" v-if="!token" class="ml-auto text-sm w-24 h-8 bg-blue-500 p-2 rounded-lg justify-self-end justify-items-center text-gray-200 hover:text-white transition">
             ! بزن بریم
           </router-link>
+          <p v-if="token" class="ml-auto text-sm w-24 h-8 bg-[#0000] p-2 rounded-lg justify-self-end justify-items-center text-white transition">
+            {{ user.first_name }} سلام
+          </p>
         </div>
         <!-- nav menu end -->
 

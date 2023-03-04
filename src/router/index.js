@@ -26,7 +26,52 @@ const routes = [
                 path:'login',
                 name:'login',
                 component:()=> import('../pages/loginPage'),
-            }
+            },
+            {
+                path:'register',
+                name:'register',
+                component:()=> import('../pages/registerPage'),
+            },
+            {
+                path:'account',
+                name:'account',
+                component:()=> import('../pages/profile/userInfoPage'),
+            },
+            {
+                path:'address',
+                name:'address',
+                component:()=> import('../pages/profile/addressPage'),
+            },
+            {
+                path:'change-password',
+                name:'change-password',
+                component:()=> import('../pages/profile/userInfoPage'),
+            },
+            {
+                path:'wish-list',
+                name:'wish-list',
+                component:()=> import('../pages/profile/wishListPage'),
+            },
+            {
+                path:'show/:id',
+                name:'show',
+                component:()=> import('../pages/viewPage'),
+            },
+            {
+                path:'cart',
+                name:'cart',
+                component:()=> import('../pages/profile/cartPage'),
+            },
+            {
+                path:'search',
+                name:'search',
+                component:()=> import('../pages/searchPage'),
+            },
+            {
+                path:'search/:query',
+                name:'search-query',
+                component:()=> import('../pages/searchPage'),
+            },
         ]
     }
 ]

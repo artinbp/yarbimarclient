@@ -61,6 +61,7 @@ const userData = ref({
 })
 const login = async () => {
   await store.dispatch('generateLogin', { email: userData.value.email, password: userData.value.password })
+  await store.dispatch('generateUserInfo')
   await router.push('/')
 }
 </script>
